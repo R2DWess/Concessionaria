@@ -34,4 +34,14 @@ public class CarroController {
     public ResponseEntity<?> ListarPorCarro(@PathVariable int codigo){
         return carroServiceImpl.listarPorCarro(codigo);
     }
+
+    @PatchMapping("/editar")
+    public ResponseEntity<?> editar(@RequestBody CarroModel carroModel){
+        return carroServiceImpl.editarDadosCarro(carroModel);
+    }
+
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<?> remover(@PathVariable int codigo){
+        return carroServiceImpl.removerCarro(codigo);
+    }
 }
