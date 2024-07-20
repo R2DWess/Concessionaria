@@ -6,8 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import wzzy.concessionaria.carro.DadosAtualizacaoCarro;
+import wzzy.concessionaria.carro.DadosCadastrarCarro;
 import wzzy.concessionaria.model.CarroModel;
 import wzzy.concessionaria.model.Mensagem;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarroServiceImpl {
@@ -91,5 +96,11 @@ public class CarroServiceImpl {
             mensagem.setMensagem("Pessoa removida com sucesso");
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         }
+    }
+
+    public ResponseEntity<?> cadastrarVarios(List<DadosCadastrarCarro>  carrosList) {
+        List<CarroModel> carros = carrosList.stream().map(CarroModel::new).toList();
+        carroRepository.saveAll(carros);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

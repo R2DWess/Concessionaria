@@ -1,88 +1,66 @@
 package wzzy.concessionaria.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import wzzy.concessionaria.carro.DadosAtualizacaoCarro;
+import wzzy.concessionaria.carro.DadosCadastrarCarro;
+import wzzy.concessionaria.carro.Marca;
 
 @Entity
 @Table(name = "carros")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "codigo")
 public class CarroModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
     private String nome;
-    private String marca;
     private Double preco;
     private String modelo;
     private String cor;
     private int ano;
 
-    public CarroModel() {
+    @Enumerated(EnumType.STRING)
+    private Marca marca;
+
+    private Boolean ativo;
+
+    public CarroModel(DadosCadastrarCarro carro) {
+
+        this.marca = carro.marca();
+        this.preco = carro.preco();
+        this.modelo = carro.modelo();
+        this.cor = carro.cor();
+        this.ano = carro.ano();
+        this.ativo = true;
     }
 
-    public CarroModel(String marca,
-                      Double preco,
-                      String modelo,
-                      String cor, int ano) {
-        this.marca = marca;
-        this.preco = preco;
-        this.modelo = modelo;
-        this.cor = cor;
-        this.ano = ano;
+    public void atualizarInformacoes(DadosAtualizacaoCarro carro){
+        if (carro.nome()!= null) {
+            this.nome = carro.nome();
+        }
+        if (carro.modelo() != null) {
+            this.modelo = carro.modelo();
+        }
+        if (carro.cor() != null) {
+            this.cor = carro.cor();
+        }
+        if (carro.preco() != null) {
+            this.preco = carro.preco();
+        }
+        if (carro.ano() < 0){
+            this.ano = carro.ano();
+            }
+        }
+
+        public void excluir(){
+        this.ativo = false;
     }
 
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
-    }
 }
